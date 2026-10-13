@@ -1,0 +1,391 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080b14">
+  <meta name="description" content="Meet Karya AI — your personal, locally running AI assistant for Windows.">
+  <title>Karya AI — Your AI. Your Rules.</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080b14;
+      --panel: #101625;
+      --text: #f4f7ff;
+      --muted: #a1abc0;
+      --blue: #6d8cff;
+      --cyan: #50e5d0;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 22px 8%;
+      border-bottom: 1px solid #ffffff12;
+    }
+
+    .brand {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .brand span { color: var(--cyan); }
+
+    .nav a:last-child {
+      color: #cbd5ff;
+      font-size: 14px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 105px 20px 90px;
+      background:
+        radial-gradient(ellipse at 50% 0%, #405bd533, transparent 60%);
+    }
+
+    .pill {
+      display: inline-block;
+      border: 1px solid #50e5d055;
+      background: #50e5d00c;
+      color: var(--cyan);
+      padding: 7px 14px;
+      border-radius: 50px;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-size: clamp(46px, 8vw, 84px);
+      line-height: 1.08;
+      letter-spacing: -4px;
+      margin-bottom: 25px;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 640px;
+      margin: auto;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 13px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      border: 1px solid #ffffff20;
+      transition: transform .2s, opacity .2s;
+      cursor: pointer;
+    }
+
+    .btn:hover { transform: translateY(-2px); opacity: .9; }
+
+    .primary {
+      background: linear-gradient(100deg, var(--blue), #596ee9);
+      border: none;
+      color: white;
+    }
+
+    .secondary { background: #ffffff08; }
+
+    .note {
+      color: #7f8aa2;
+      font-size: 12px;
+      margin-top: 18px;
+    }
+
+    .preview {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .window {
+      background: #0e1422;
+      border: 1px solid #ffffff20;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 25px 100px #314b9b20;
+    }
+
+    .window-top {
+      padding: 14px 18px;
+      background: #ffffff06;
+      border-bottom: 1px solid #ffffff12;
+      color: #9ca8c1;
+      font-size: 13px;
+    }
+
+    .dots { color: #75809a; margin-right: 10px; }
+
+    .terminal { padding: 27px; font-family: Consolas, monospace; }
+
+    .terminal .label { color: var(--cyan); }
+    .terminal p { margin: 9px 0 20px; color: #d6def2; }
+    .terminal .answer { color: #aab7d2; }
+
+    section { padding: 85px 8%; }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(30px, 5vw, 44px);
+      letter-spacing: -1.5px;
+      margin-bottom: 14px;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto 42px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid #ffffff12;
+      border-radius: 15px;
+      padding: 26px;
+    }
+
+    .emoji { font-size: 28px; margin-bottom: 16px; }
+
+    .card h3 { margin-bottom: 8px; font-size: 19px; }
+    .card p { color: var(--muted); font-size: 14px; }
+
+    .download-box {
+      max-width: 760px;
+      margin: auto;
+      text-align: center;
+      padding: 48px 25px;
+      border-radius: 20px;
+      border: 1px solid #6d8cff40;
+      background: linear-gradient(135deg, #182343, #101625 70%);
+    }
+
+    .download-box p {
+      color: var(--muted);
+      max-width: 550px;
+      margin: 12px auto 25px;
+    }
+
+    .steps {
+      max-width: 760px;
+      margin: auto;
+      display: grid;
+      gap: 14px;
+    }
+
+    .step {
+      display: flex;
+      gap: 18px;
+      padding: 20px;
+      background: var(--panel);
+      border-radius: 12px;
+      border: 1px solid #ffffff10;
+    }
+
+    .number {
+      color: var(--cyan);
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .step p { color: var(--muted); font-size: 14px; }
+
+    footer {
+      border-top: 1px solid #ffffff12;
+      padding: 28px 8%;
+      text-align: center;
+      color: #7f8aa2;
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 75px; }
+      h1 { letter-spacing: -2px; }
+      section { padding: 65px 6%; }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="nav">
+    <a href="#" class="brand">Karya<span>.</span></a>
+    <a href="#features">Features &nbsp; · &nbsp; Download</a>
+  </nav>
+
+  <header class="hero">
+    <div class="pill">✦ YOUR PERSONAL AI ASSISTANT</div>
+    <h1>Meet your new<br><span>AI companion.</span></h1>
+    <p>
+      Meet Karya — a personal AI assistant built to help you think,
+      create, learn, and get things done, right from your computer.
+    </p>
+    <div class="actions">
+      <a href="#download" class="btn primary">Get Karya ↓</a>
+      <a href="#features" class="btn secondary">Explore Features</a>
+    </div>
+    <div class="note">Windows · Powered by Ollama · Local AI setup</div>
+  </header>
+
+  <div class="preview">
+    <div class="window">
+      <div class="window-top">
+        <span class="dots">● ● ●</span> Karya AI — Assistant
+      </div>
+      <div class="terminal">
+        <div class="label">Karya &gt;</div>
+        <p>Hey! What can I help you with today?</p>
+        <div class="label">You &gt;</div>
+        <p>Help me turn my ideas into something real.</p>
+        <div class="label">Karya &gt;</div>
+        <p class="answer">
+          Absolutely. Every great project starts with an idea.
+          Let's break yours into small steps and build it together.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <section id="features">
+    <h2 class="section-title">Built for your workflow.</h2>
+    <p class="section-sub">
+      A simple assistant with a focus on useful tools and a local-first setup.
+    </p>
+
+    <div class="grid">
+      <article class="card">
+        <div class="emoji">⚡</div>
+        <h3>Local AI</h3>
+        <p>Run a supported language model on your own computer through Ollama.</p>
+      </article>
+
+      <article class="card">
+        <div class="emoji">💬</div>
+        <h3>Chat History</h3>
+        <p>Keep conversations available locally and use supported commands to manage them.</p>
+      </article>
+
+      <article class="card">
+        <div class="emoji">🛠️</div>
+        <h3>Made to Grow</h3>
+        <p>A project you can keep improving with new commands and features.</p>
+      </article>
+
+      <article class="card">
+        <div class="emoji">🔒</div>
+        <h3>Local-first design</h3>
+        <p>Your chats can stay on your computer, but check each feature's data handling before use.</p>
+      </article>
+
+      <article class="card">
+        <div class="emoji">🖥️</div>
+        <h3>Windows focused</h3>
+        <p>Designed around a simple Windows launch workflow.</p>
+      </article>
+
+      <article class="card">
+        <div class="emoji">🚀</div>
+        <h3>Your project</h3>
+        <p>Built step by step, with room for your own ideas and improvements.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="download-box">
+      <div class="pill">KARYA FOR WINDOWS</div>
+      <h2 class="section-title">Ready to meet Karya?</h2>
+      <p>
+        The public download will be available here once the complete
+        Karya package is uploaded to a trusted hosting service.
+      </p>
+      <a class="btn primary" href="#setup">View Setup Guide ↓</a>
+      <div class="note">Download link not configured yet.</div>
+    </div>
+  </section>
+
+  <section id="setup">
+    <h2 class="section-title">Get started</h2>
+    <p class="section-sub">
+      Before sharing Karya publicly, package the app and test it on a clean Windows setup.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="number">01</div>
+        <div>
+          <h3>Prepare the app</h3>
+          <p>Include Karya's Python app, launcher, dependencies, and clear setup instructions.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="number">02</div>
+        <div>
+          <h3>Set up Ollama</h3>
+          <p>Explain how to install Ollama and obtain the required model. Model files can be large.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="number">03</div>
+        <div>
+          <h3>Publish the package</h3>
+          <p>Upload a tested ZIP or release to a trusted hosting service, then add its real URL to the download button.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="brand">Karya<span>.</span></div>
+    <p>Built with curiosity. Made to keep growing.</p>
+    <p>© <span id="year"></span> Karya AI · Independent project</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
